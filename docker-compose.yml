@@ -1,0 +1,71 @@
+# Local development and self-hosting.
+#   docker compose up -d mongo                 # MongoDB only, for `npm run dev`
+#   docker compose --profile app up -d --build # everything, at http://localhost:3500
+#
+# The secrets below are for local use only. Change them before exposing this anywhere.
+
+x-app-env: &app-env
+  MONGO_URL: mongodb://mongo:27017/hookrelay
+  APP_URL: http://localhost:3500
+  ENCRYPTION_KEY: 9f1c4e0b7a2d6e8f3b5c1a7d9e2f4b6c8a0d2e4f6b8c0a2e4f6b8d0c2e4a6b8d
+  DESTINATION_ALLOW_HOSTS: receiver
+  ALLOW_HTTP_DESTINATIONS: "true"
+
+services:
+  mongo:
+    # MongoDB 8.0.30+ and 8.3 refuse to start on Linux 6.19+ (SERVER-121912); 8.2.12 runs.
+    image: mongo:8.2.12-noble
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      retries: 20
+
+  seed:
+    build: { context: ., target: app }
+    command: ["node", "dist/scripts/seed.js"]
+    healthcheck: { disable: true }
+    environment:
+      <<: *app-env
+      SEED_ADMIN_EMAIL: admin@example.com
+      SEED_ADMIN_PASSWORD: hookrelay-demo
+      SEED_RECEIVER_URL: http://receiver:4000/webhooks
+      SEED_DESTINATION_SECRET: whsec_ZGVtby1zZWNyZXQtZm9yLWxvY2FsLXVzZS1vbmx5
+    depends_on:
+      mongo: { condition: service_healthy }
+    profiles: ["app"]
+
+  app:
+    build: { context: ., target: app }
+    environment: *app-env
+    ports:
+      - "3500:3500"
+    depends_on:
+      seed: { condition: service_completed_successfully }
+    profiles: ["app"]
+
+  worker:
+    build: { context: ., target: app }
+    command: ["node", "dist/server/worker.js"]
+    healthcheck: { disable: true }
+    environment: *app-env
+    depends_on:
+      seed: { condition: service_completed_successfully }
+    profiles: ["app"]
+
+  # Demo destination: verifies signatures and fails 20% of requests, so retries show up.
+  receiver:
+    build: { context: ., target: app }
+    command: ["node", "examples/receiver.mjs"]
+    healthcheck: { disable: true }
+    environment:
+      PORT: "4000"
+      HOOKRELAY_SECRET: whsec_ZGVtby1zZWNyZXQtZm9yLWxvY2FsLXVzZS1vbmx5
+      FAIL_RATE: "0.2"
+    profiles: ["app"]
+
+volumes:
+  mongodata:
