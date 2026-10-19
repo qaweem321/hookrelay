@@ -74,7 +74,9 @@ export function Deliveries() {
                 <th>Destination</th>
                 <th>Status</th>
                 <th>Last attempt</th>
-                <th />
+                <th>
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>
