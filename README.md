@@ -95,7 +95,7 @@ with the destination's signing secret (Destinations → Reveal), or copy the `ve
 ```bash
 docker compose up -d mongo
 cp .env.example .env
-npm install
+npm ci
 npm run dev        # API on :3500 (with the worker), dashboard on http://localhost:5173
 ```
 
