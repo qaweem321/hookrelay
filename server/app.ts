@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import express, { type ErrorRequestHandler } from "express";
 import helmet from "helmet";
@@ -24,6 +25,7 @@ export function createApp(ctx: Context, logger: Logger, options: { webDist?: str
   app.disable("x-powered-by");
   if (ctx.env.TRUST_PROXY) app.set("trust proxy", 1);
   app.use(helmet());
+  app.use(compression());
   app.use(pinoHttp({ logger, autoLogging: { ignore: (req) => req.url === "/api/health" } }));
 
   app.get("/api/health", async (_req, res) => {

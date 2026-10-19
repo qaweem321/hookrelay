@@ -33,6 +33,7 @@ is retried on the provider's schedule, or lost. Hookrelay sits in front of your 
 - **Pause** a destination during maintenance; its deliveries wait and go out when you resume.
 - **SSRF protection**: destinations can't reach private or cloud-metadata addresses unless allowlisted.
 - **Dashboard**: 24-hour stats and chart, events, deliveries, sources, destinations and team members.
+  Responses are compressed and each page loads its own code on demand.
 - **Scales out**: run as many workers as you like; claims are atomic.
 - **Retention**: events expire after 14 days by default (TTL index).
 
@@ -132,7 +133,7 @@ The app refuses to start with a list of every invalid variable.
 
 ## Tech
 
-Node 24, TypeScript, Express 5, Mongoose 9 (MongoDB 8), Zod, Pino, Helmet · React 19, React Router,
+Node 24, TypeScript, Express 5, Mongoose 9 (MongoDB 8), Zod, Pino, Helmet, compression · React 19, React Router,
 TanStack Query, Tailwind CSS 4, Vite · Vitest, Supertest, mongodb-memory-server, Testing Library ·
 ESLint, Prettier, commitlint, husky · Docker, GitHub Actions.
 

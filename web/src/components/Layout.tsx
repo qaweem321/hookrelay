@@ -1,7 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
+import { Suspense } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { post } from "../lib/api";
 import { useAuth } from "../lib/queries";
+import { Loading } from "./ui";
 
 const NAV = [
   { to: "/", label: "Dashboard", end: true },
@@ -69,7 +71,9 @@ export function Layout() {
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-8">
-        <Outlet />
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );

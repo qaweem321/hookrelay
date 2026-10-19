@@ -1,19 +1,26 @@
+import { lazy } from "react";
 import { Route, Routes } from "react-router";
 import { RequireGuest, RequireUser } from "./components/guards";
 import { Layout } from "./components/Layout";
 import { AuthPage } from "./pages/AuthPage";
-import { Dashboard } from "./pages/Dashboard";
-import { Deliveries } from "./pages/Deliveries";
-import { DestinationDetail } from "./pages/DestinationDetail";
-import { DestinationNew } from "./pages/DestinationNew";
-import { Destinations } from "./pages/Destinations";
-import { EventDetail } from "./pages/EventDetail";
-import { Events } from "./pages/Events";
-import { NotFound } from "./pages/NotFound";
-import { Settings } from "./pages/Settings";
-import { SourceDetail } from "./pages/SourceDetail";
-import { SourceNew } from "./pages/SourceNew";
-import { Sources } from "./pages/Sources";
+
+// Each dashboard page is its own chunk, so the first load only downloads and runs what it shows.
+const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
+const Deliveries = lazy(() => import("./pages/Deliveries").then((m) => ({ default: m.Deliveries })));
+const DestinationDetail = lazy(() =>
+  import("./pages/DestinationDetail").then((m) => ({ default: m.DestinationDetail })),
+);
+const DestinationNew = lazy(() =>
+  import("./pages/DestinationNew").then((m) => ({ default: m.DestinationNew })),
+);
+const Destinations = lazy(() => import("./pages/Destinations").then((m) => ({ default: m.Destinations })));
+const EventDetail = lazy(() => import("./pages/EventDetail").then((m) => ({ default: m.EventDetail })));
+const Events = lazy(() => import("./pages/Events").then((m) => ({ default: m.Events })));
+const NotFound = lazy(() => import("./pages/NotFound").then((m) => ({ default: m.NotFound })));
+const Settings = lazy(() => import("./pages/Settings").then((m) => ({ default: m.Settings })));
+const SourceDetail = lazy(() => import("./pages/SourceDetail").then((m) => ({ default: m.SourceDetail })));
+const SourceNew = lazy(() => import("./pages/SourceNew").then((m) => ({ default: m.SourceNew })));
+const Sources = lazy(() => import("./pages/Sources").then((m) => ({ default: m.Sources })));
 
 export function App() {
   return (
