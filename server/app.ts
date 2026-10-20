@@ -58,10 +58,12 @@ export function createApp(ctx: Context, logger: Logger, options: { webDist?: str
   });
   app.use("/api", api);
 
-  // The built dashboard: static assets plus index.html for every client-side route.
+  // The built dashboard: static assets plus index.html for every client-side route. Only the
+  // hashed files in /assets are cached for good; the rest (favicon, theme.js) are revalidated.
   const webDist = options.webDist;
   if (webDist && existsSync(path.join(webDist, "index.html"))) {
-    app.use(express.static(webDist, { index: false, maxAge: "1y", immutable: true }));
+    app.use("/assets", express.static(path.join(webDist, "assets"), { maxAge: "1y", immutable: true }));
+    app.use(express.static(webDist, { index: false }));
     app.get("/{*path}", (_req, res) => {
       res.set("cache-control", "no-cache").sendFile(path.join(webDist, "index.html"));
     });

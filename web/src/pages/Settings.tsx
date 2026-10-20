@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import type { User } from "../../../shared/types";
 import { ConfirmButton, SubmitButton } from "../components/buttons";
 import { PasswordInput } from "../components/PasswordInput";
+import { ThemeSelect } from "../components/ThemeSelect";
 import { ErrorBox, Field, Loading, PageHeader } from "../components/ui";
 import { api, del, post } from "../lib/api";
 import { formatDate } from "../lib/format";
@@ -55,6 +56,20 @@ function ChangePassword() {
       </Field>
       <SubmitButton pending={change.isPending}>Change password</SubmitButton>
     </form>
+  );
+}
+
+function Appearance() {
+  return (
+    <section className="card space-y-4 p-6">
+      <div>
+        <h2 className="font-medium">Appearance</h2>
+        <p className="muted text-sm">Saved in this browser. System follows your device.</p>
+      </div>
+      <Field label="Theme" htmlFor="theme">
+        <ThemeSelect />
+      </Field>
+    </section>
   );
 }
 
@@ -156,7 +171,10 @@ export function Settings() {
       <PageHeader title="Settings" />
       <div className="grid gap-6 lg:grid-cols-2">
         <Team />
-        <ChangePassword />
+        <div className="space-y-6">
+          <ChangePassword />
+          <Appearance />
+        </div>
       </div>
     </>
   );

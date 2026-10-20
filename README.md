@@ -33,7 +33,8 @@ is retried on the provider's schedule, or lost. Hookrelay sits in front of your 
 - **Pause** a destination during maintenance; its deliveries wait and go out when you resume.
 - **SSRF protection**: destinations can't reach private or cloud-metadata addresses unless allowlisted.
 - **Dashboard**: 24-hour stats and chart, events, deliveries, sources, destinations and team members.
-  Responses are compressed and each page loads its own code on demand.
+  Responses are compressed and each page loads its own code on demand. Light, dark or system theme
+  in Settings.
 - **Scales out**: run as many workers as you like; claims are atomic.
 - **Retention**: events expire after 14 days by default (TTL index).
 

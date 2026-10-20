@@ -8,6 +8,7 @@ import {
   formatRelative,
 } from "./format";
 import { loginUrl, safeNext } from "./next";
+import { getTheme, isTheme, setTheme } from "./theme";
 
 describe("dates", () => {
   it("spells out the month and uses UTC", () => {
@@ -47,5 +48,23 @@ describe("safeNext", () => {
   it("builds login links that return to the page", () => {
     expect(loginUrl("/events/abc")).toBe("/login?next=%2Fevents%2Fabc");
     expect(loginUrl("/login")).toBe("/login");
+  });
+});
+
+describe("theme", () => {
+  it("accepts only the three choices", () => {
+    expect(["system", "light", "dark"].every(isTheme)).toBe(true);
+    expect(isTheme("blue")).toBe(false);
+    expect(isTheme(null)).toBe(false);
+  });
+
+  it("saves the choice and sets the dark class", () => {
+    expect(getTheme()).toBe("system");
+    setTheme("dark");
+    expect(getTheme()).toBe("dark");
+    expect(document.documentElement).toHaveClass("dark");
+    setTheme("light");
+    expect(document.documentElement).not.toHaveClass("dark");
+    localStorage.clear();
   });
 });
