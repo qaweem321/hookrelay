@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { useSearchParams } from "react-router";
 import { SubmitButton } from "../components/buttons";
 import { Logo } from "../components/Layout";
+import { PasswordInput } from "../components/PasswordInput";
 import { ErrorBox, Field } from "../components/ui";
 import { post } from "../lib/api";
 import { safeNext } from "../lib/next";
@@ -49,10 +50,8 @@ export function AuthPage({ mode }: { mode: "login" | "setup" }) {
             />
           </Field>
           <Field label="Password" htmlFor="password" hint={setup ? "At least 10 characters." : undefined}>
-            <input
+            <PasswordInput
               id="password"
-              className="input"
-              type="password"
               autoComplete={setup ? "new-password" : "current-password"}
               required
               minLength={setup ? 10 : undefined}

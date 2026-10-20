@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import type { User } from "../../../shared/types";
 import { ConfirmButton, SubmitButton } from "../components/buttons";
+import { PasswordInput } from "../components/PasswordInput";
 import { ErrorBox, Field, Loading, PageHeader } from "../components/ui";
 import { api, del, post } from "../lib/api";
 import { formatDate } from "../lib/format";
@@ -34,10 +35,8 @@ function ChangePassword() {
         </p>
       )}
       <Field label="Current password" htmlFor="current">
-        <input
+        <PasswordInput
           id="current"
-          className="input"
-          type="password"
           autoComplete="current-password"
           required
           value={current}
@@ -45,10 +44,8 @@ function ChangePassword() {
         />
       </Field>
       <Field label="New password" htmlFor="next" hint="At least 10 characters.">
-        <input
+        <PasswordInput
           id="next"
-          className="input"
-          type="password"
           autoComplete="new-password"
           required
           minLength={10}
@@ -137,10 +134,8 @@ function Team() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
+          <PasswordInput
             aria-label="Temporary password"
-            className="input"
-            type="password"
             autoComplete="new-password"
             placeholder="Temporary password (10+ characters)"
             required

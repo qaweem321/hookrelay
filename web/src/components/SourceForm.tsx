@@ -7,6 +7,7 @@ import {
   type Provider,
   type Source,
 } from "../../../shared/types";
+import { PasswordInput } from "./PasswordInput";
 import { SubmitButton } from "./buttons";
 import { ErrorBox, Field } from "./ui";
 
@@ -96,10 +97,10 @@ export function SourceForm({
               : SECRET_HINTS[provider]
           }
         >
-          <input
+          <PasswordInput
             id="secret"
-            className="input font-mono"
-            type="password"
+            noun="secret"
+            className="font-mono"
             autoComplete="off"
             required={!initial?.hasSecret}
             value={secret}

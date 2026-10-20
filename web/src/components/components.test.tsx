@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { ConfirmButton, SubmitButton } from "./buttons";
 import { HourlyChart } from "./HourlyChart";
+import { PasswordInput } from "./PasswordInput";
 import { StatusBadge } from "./ui";
 
 describe("SubmitButton", () => {
@@ -11,6 +12,18 @@ describe("SubmitButton", () => {
     expect(screen.getByRole("button", { name: "Save" })).toBeEnabled();
     rerender(<SubmitButton pending>Save</SubmitButton>);
     expect(screen.getByRole("button", { name: "Saving..." })).toBeDisabled();
+  });
+});
+
+describe("PasswordInput", () => {
+  it("shows and hides the password with the eye button", async () => {
+    render(<PasswordInput aria-label="Password" defaultValue="hunter2" />);
+    const input = screen.getByLabelText("Password");
+    expect(input).toHaveAttribute("type", "password");
+    await userEvent.click(screen.getByRole("button", { name: "Show password" }));
+    expect(input).toHaveAttribute("type", "text");
+    await userEvent.click(screen.getByRole("button", { name: "Hide password" }));
+    expect(input).toHaveAttribute("type", "password");
   });
 });
 
