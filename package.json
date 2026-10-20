@@ -1,6 +1,5 @@
 {
   "name": "hookrelay",
-  "version": "1.0.0",
   "private": true,
   "description": "Self-hosted webhook gateway: receive, verify, store, fan out and retry webhooks. Express, MongoDB, React.",
   "license": "MIT",
