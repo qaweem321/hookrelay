@@ -92,6 +92,29 @@ Each delivery carries `webhook-id`, `webhook-timestamp` and `webhook-signature` 
 with the destination's signing secret (Destinations → Reveal), or copy the `verify` function in
 [`examples/receiver.mjs`](examples/receiver.mjs).
 
+## Project structure
+
+```
+server/                 Express API and delivery worker (TypeScript)
+  index.ts, app.ts      API server; worker.ts starts the delivery worker
+  routes/               REST API: auth, sources, destinations, events, deliveries, stats, users
+                        ingest.ts receives provider webhooks at POST /in/<source>
+  services/             ingest (verify, dedupe, store), deliver (signed POST), worker (claim, retry)
+  lib/                  signature checks, Standard Webhooks signing, backoff, event filters, encryption
+  models/               Mongoose models and indexes
+  middleware/auth.ts    login check for the API
+  env.ts                settings, checked at start-up
+shared/                 request schemas and types used by both server and web
+web/                    React dashboard (Vite)
+  src/pages/            sources, destinations, events, deliveries, settings, login
+  src/components/       shared UI
+  src/lib/              API client, data fetching, formatting
+examples/receiver.mjs   a small receiver that verifies Hookrelay's signature
+scripts/seed.ts         demo data
+docs/DECISIONS.md       design choices and trade-offs
+Dockerfile, docker-compose.yml   runs MongoDB, the API, the worker and the example receiver
+```
+
 ## Development
 
 ```bash
